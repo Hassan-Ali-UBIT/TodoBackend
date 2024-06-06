@@ -1,8 +1,6 @@
 import requests
 from getpass import getpass
 
-
-
 auth_endpoint = "http://127.0.0.1:8000/todos/auth/"
 
 username = input("What is the username: ")

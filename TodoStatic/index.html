@@ -13,9 +13,33 @@
     referrerpolicy="no-referrer"
   ></script>
   <script>
-    axios.get("http://127.0.0.1:8000/todos/").then((res) => {
-      data = res.data;
-      console.log(data);
-    });
+    // axios.get("http://127.0.0.1:8000/todos/").then((res) => {
+    //   data = res.data;
+    //   console.log(data);
+    // });
+    let authDetail = {
+      username: "TodoChecker",
+      password: "levyrozman@123",
+    };
+
+    let config = {};
+
+    axios
+      .post("http://127.0.0.1:8000/todos/auth/", authDetail)
+      .then((res) => {
+        config.token = res.data.token;
+
+        axios
+          .get("http://127.0.0.1:8000/todos/", {}, config)
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   </script>
 </html>

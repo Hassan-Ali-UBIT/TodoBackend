@@ -1,25 +1,20 @@
 from django.shortcuts import render
 from .serializer import TodoSerializer
 from .models import Todos
-from .permissions import isTodoEditor
-from rest_framework import generics, mixins, permissions, authentication
+from rest_framework import generics, mixins
+from .mixins import TodoEditorPermissionMixin
 # Create your views here.
 
 
-class get_view(generics.ListCreateAPIView):
+class get_view(generics.ListCreateAPIView, TodoEditorPermissionMixin):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser, isTodoEditor]
-    authentication_classes = [authentication.SessionAuthentication,
-                              authentication.TokenAuthentication]
 
-class update_view(generics.RetrieveUpdateDestroyAPIView):
+class update_view(generics.RetrieveUpdateDestroyAPIView, TodoEditorPermissionMixin):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser, isTodoEditor]
-    authentication_classes = [authentication.SessionAuthentication]
 
 show_view = get_view.as_view()
 updelete_view = update_view.as_view()
@@ -29,13 +24,12 @@ class TodoView(generics.GenericAPIView,
                mixins.DestroyModelMixin,
                mixins.ListModelMixin,
                mixins.UpdateModelMixin,
-               mixins.RetrieveModelMixin):
+               mixins.RetrieveModelMixin, 
+               TodoEditorPermissionMixin):
     
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    authentication_classes = [authentication.SessionAuthentication]
     
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
