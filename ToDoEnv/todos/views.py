@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .serializer import TodoSerializer
 from .models import Todos
+from .permissions import isTodoEditor
 from rest_framework import generics, mixins, permissions, authentication
 # Create your views here.
 
@@ -8,11 +9,16 @@ from rest_framework import generics, mixins, permissions, authentication
 class get_view(generics.ListCreateAPIView):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
+    lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser, isTodoEditor]
+    authentication_classes = [authentication.SessionAuthentication]
 
 class update_view(generics.RetrieveUpdateDestroyAPIView):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
-    lookup_field = "pk"
+    lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser, isTodoEditor]
+    authentication_classes = [authentication.SessionAuthentication]
 
 show_view = get_view.as_view()
 updelete_view = update_view.as_view()
