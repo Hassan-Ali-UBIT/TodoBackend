@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .serializer import TodoSerializer
 from .models import Todos
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions, authentication
 # Create your views here.
 
 
@@ -27,6 +27,8 @@ class TodoView(generics.GenericAPIView,
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    authentication_classes = [authentication.SessionAuthentication]
     
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
