@@ -11,7 +11,8 @@ class get_view(generics.ListCreateAPIView):
     serializer_class = TodoSerializer
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser, isTodoEditor]
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.SessionAuthentication,
+                              authentication.TokenAuthentication]
 
 class update_view(generics.RetrieveUpdateDestroyAPIView):
     queryset = Todos.objects.all()
