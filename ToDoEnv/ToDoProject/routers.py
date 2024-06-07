@@ -3,6 +3,6 @@ from todos.viewsets import todoViewSet
 
 router = DefaultRouter()
 
-router.register('todos-abc', todoViewSet, basename='todos')
+router.register('', todoViewSet, basename='todos')
 
 urlpatterns = router.urls
