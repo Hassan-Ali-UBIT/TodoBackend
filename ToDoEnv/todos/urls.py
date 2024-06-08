@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('all/update/<int:pk>/', views.generalview),
     path('', views.show_view),
+    path('post/', views.post_view),
     path('updel/<int:pk>/', views.updelete_view, name="todo-detail"),
     path('<int:pk>/', views.get_specific_view, name="todo-list"),
     path('all/<int:pk>/', views.generalview),

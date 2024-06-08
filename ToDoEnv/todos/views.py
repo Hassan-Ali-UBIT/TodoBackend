@@ -11,6 +11,27 @@ class get_view(generics.ListAPIView, TodoEditorPermissionMixin):
     serializer_class = TodoSerializer
     lookup_field = 'pk'
 
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        user = request.user
+
+        if not user.is_authenticated:
+            return Todos.objects.none()
+        
+        return qs.filter(user=user)
+    
+class create_view(generics.CreateAPIView, TodoEditorPermissionMixin):
+    queryset = Todos.objects.all()
+    serializer_class = TodoSerializer
+    lookup_field = 'pk'
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+post_view = create_view.as_view()
+
+
 class update_view(generics.RetrieveUpdateDestroyAPIView, TodoEditorPermissionMixin):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer

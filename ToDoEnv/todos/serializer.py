@@ -8,7 +8,7 @@ class TodoSerializer(serializers.ModelSerializer):
     edit_url = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Todos
-        fields = ['url','edit_url', 'pk', 'task','content' ,'completion']
+        fields = ['user','url','edit_url', 'pk', 'task','content' ,'completion']
 
     def get_edit_url(self, obj):
         request = self.context.get("request")
