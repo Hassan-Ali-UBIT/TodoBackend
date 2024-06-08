@@ -6,7 +6,7 @@ from .mixins import TodoEditorPermissionMixin
 # Create your views here.
 
 
-class get_view(generics.ListCreateAPIView, TodoEditorPermissionMixin):
+class get_view(generics.ListAPIView, TodoEditorPermissionMixin):
     queryset = Todos.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
@@ -16,8 +16,14 @@ class update_view(generics.RetrieveUpdateDestroyAPIView, TodoEditorPermissionMix
     serializer_class = TodoSerializer
     lookup_field = 'pk'
 
+class retrieve_view(generics.RetrieveAPIView, TodoEditorPermissionMixin):
+    queryset = Todos.objects.all()
+    serializer_class = TodoSerializer
+    lookup_field = 'pk'
+
 show_view = get_view.as_view()
 updelete_view = update_view.as_view()
+get_specific_view = retrieve_view.as_view()
 
 class TodoView(generics.GenericAPIView, 
                mixins.CreateModelMixin,
