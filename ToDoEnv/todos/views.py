@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .serializer import TodoSerializer
 from .models import Todos
 from rest_framework import generics, mixins
+from rest_framework.response import Response
 from .mixins import TodoEditorPermissionMixin
 # Create your views here.
 
@@ -83,3 +84,24 @@ class TodoView(generics.GenericAPIView,
         return super().perform_destroy(instance)
     
 generalview = TodoView.as_view()
+
+from . import client
+
+class search_view(generics.GenericAPIView):
+    def get(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Todos.objects.none()
+        query = []
+        tags = []
+
+        query = request.GET.get('q') 
+        tags = request.GET.get('tag')
+        completion = str(request.GET.get('completion')) != "0"
+        if not query:
+            return Response("", status=400)
+        
+        result = client.perform_search(query, tags=tags, completion=completion)
+
+        
+
+        return Response(result)

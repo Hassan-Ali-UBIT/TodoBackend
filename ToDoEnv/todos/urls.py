@@ -13,5 +13,6 @@ urlpatterns = [
     path('all/', views.generalview),
     path('all/delete/<int:pk>/', views.generalview),
     path('auth/', obtain_auth_token),
+    path('search/', views.search_view.as_view())
 
 ]

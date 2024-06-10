@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'todos',
-    'corsheaders'
+    'corsheaders',
+    'algoliasearch_django'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ToDoProject.wsgi.application'
+
+# Algolia
+
+ALGOLIA = {
+  'APPLICATION_ID': 'BA8QAV5122',
+  'API_KEY': 'd7e1641ed85a1b73462c312c811bb856',
+  'INDEX_PREFIX': 'TODO'
+}
 
 
 # Database
